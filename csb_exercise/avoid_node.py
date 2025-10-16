@@ -2,6 +2,7 @@ import rclpy
 from sensor_msgs.msg import LaserScan # LaserScan message
 from geometry_msgs.msg import Twist # Twist message
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, ReliabilityPolicy
 
 class AvoidNode(Node):
     """
@@ -10,19 +11,25 @@ class AvoidNode(Node):
     def __init__(self, name):
         super().__init__(name)
 
+        # Define QoS profile
+        qos_profile = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            depth=10
+        )
+
         # Create subscriber to subscribe to laser scan data
         self.sub = self.create_subscription(
             LaserScan,
             'scan',
             self.laser_callback, # Callback function
-            10
+            qos_profile
         )
 
         # Create publisher to publish velocity commands
         self.pub = self.create_publisher(
             Twist,
             'cmd_vel',
-            1
+            10
         )
 
     def laser_callback(self, scan_msg):
