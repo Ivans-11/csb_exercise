@@ -25,6 +25,8 @@ setup(
     entry_points={
         'console_scripts': [
             'avoid_node = csb_exercise.avoid_node:main',
+            'line_follower = csb_exercise.line_follower:main',
+            'line_follower_example = csb_exercise.line_follower_example:main',
         ],
     },
 )
